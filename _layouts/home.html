@@ -1,0 +1,40 @@
+---
+layout: default
+---
+
+<div class="home">
+  {%- if page.title -%}
+  <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
+
+  {{ content }}
+
+  <h2>Projects</h2>
+
+  {%- assign default_paths = site.pages | where_exp: "page", "page.path contains 'projects/'" | map: "path" -%}
+  {%- assign page_paths = site.project_pages | default: default_paths -%}
+
+  {%- if page_paths -%}
+  <div class="d-flex flex-column gap-4">
+    {%- for path in page_paths -%}
+    {%- assign my_page = site.pages | where: "path", path | first -%}
+    {%- if my_page.title -%}
+    <div class="d-flex flex-column gap-2">
+      <h3 class="mb-0">
+        <a href="{{ my_page.permalink }}">
+          <span>
+            {{ my_page.title | escape }}
+          </span>
+          <svg class="svg-icon pb-1">
+            <use xlink:href="{{ '/assets/custom-icons.svg#open' | relative_url }}"></use>
+          </svg>
+        </a>
+      </h3>
+
+      {{ my_page.content }}
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+</div>
